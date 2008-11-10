@@ -39,7 +39,9 @@ sub render {
     my $options = ref $_[0] ? $_[0] : {@_};
     return 0 unless $options;
 
-    my $template = $options->{template};
+    my $template = delete $options->{template};
+    my $partial  = delete $options->{partial};
+
     my $default = $self->default_ext;
     $template .= ".$default" if $default && $template !~ /\.\w+$/;
 
@@ -61,7 +63,7 @@ sub render {
 
     my $result = $handler->($self, $tx, $path, $options);
 
-    return $result if $options->{partial};
+    return $result if $partial;
 
     my $res = $tx->res;
     $res->code(200) unless $tx->res->code;

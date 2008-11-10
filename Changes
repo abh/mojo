@@ -24,6 +24,8 @@ This file documents the revision history for Perl extension Mojo.
         - Cleaned up Mojo::File. (Leon Brocard)
         - Fallback to default renderer in MojoX::Renderer.
           (Ask Bjoern Hansen)
+        - Allow render() to pass options to the template handler.
+          (Ask Bjoern Hansen)
         - Made Mojo::Base instantiation a little bit faster.
         - Added documentation to Mojo::Base. (Marcus Ramberg)
         - Moved the home attribute from Mojolicious to Mojo.

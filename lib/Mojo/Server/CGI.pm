@@ -16,6 +16,8 @@ __PACKAGE__->attr(nph => (chained => 1, default => 0));
 sub run {
     my $self = shift;
 
+    my $output;
+
     my $tx  = $self->build_tx_cb->($self);
     my $req = $tx->req;
 
@@ -55,8 +57,14 @@ sub run {
             last unless length $chunk;
 
             # Start line
-            return unless STDOUT->opened;
-            my $written = STDOUT->syswrite($chunk);
+            my $written;
+            if ($ENV{MOJO_RETURN_ONLY}) {
+                $output .= $chunk;
+                $written = length $chunk;
+            }
+            else {
+                $written = STDOUT->syswrite($chunk);
+            }
             return unless defined $written;
             $offset += $written;
         }
@@ -80,8 +88,14 @@ sub run {
         last unless length $chunk;
 
         # Headers
-        return unless STDOUT->opened;
-        my $written = STDOUT->syswrite($chunk);
+        my $written;
+        if ($ENV{MOJO_RETURN_ONLY}) {
+            $output .= $chunk;
+            $written = length $chunk;
+        }
+        else {
+            $written = STDOUT->syswrite($chunk);
+        }
         return unless defined $written;
         $offset += $written;
     }
@@ -101,13 +115,24 @@ sub run {
         last unless length $chunk;
 
         # Content
-        return unless STDOUT->opened;
-        my $written = STDOUT->syswrite($chunk);
+        my $written;
+        if ($ENV{MOJO_RETURN_ONLY}) {
+            $output .= $chunk;
+            $written = length $chunk;
+        }
+        else {
+            $written = STDOUT->syswrite($chunk);
+        }
         return unless defined $written;
         $offset += $written;
     }
 
-    return $res->code;
+    if ($ENV{MOJO_RETURN_ONLY}) { 
+        return $output;
+    }
+    else {
+        return $res->code;
+    }
 }
 
 1;
@@ -145,6 +170,15 @@ implements the following new ones.
 
 =head2 C<run>
 
-    $cgi->run;
+    my $code = $cgi->run;
+
+    $ENV{MOJO_RETURN_ONLY} = 1;
+    $output  = $cgi->run;
+
+Runs the CGI script, prints the HTTP response to STDOUT and returns the HTTP
+response code.
+
+For testing, you can set C<$ENV{MOJO_RETURN_ONLY}> and the output will be
+returned instead of printed to STDOUT.
 
 =cut

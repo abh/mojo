@@ -26,7 +26,7 @@ sub add_chunk {
 }
 
 sub empty {
-    my $self = shift;
+    my $self   = shift;
     my $buffer = $self->{buffer};
     $self->{buffer} = '';
     return $buffer;

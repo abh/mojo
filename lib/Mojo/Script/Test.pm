@@ -27,6 +27,7 @@ sub run {
     # Search tests
     unless (@tests) {
         my @base = File::Spec->splitdir(File::Spec->abs2rel($FindBin::Bin));
+
         # Test directory in the same directory as "mojo" (t)
         my $path = File::Spec->catdir(@base, 't');
 
@@ -47,7 +48,7 @@ sub run {
                 my $fpath = File::Spec->catfile($dir, $file);
                 push @dirs, File::Spec->catdir($dir, $file) if -d $fpath;
                 push @tests, File::Spec->abs2rel(Cwd::realpath(
-                    File::Spec->catfile(File::Spec->splitdir($fpath))
+                        File::Spec->catfile(File::Spec->splitdir($fpath))
                 )) if (-f $fpath) && ($fpath =~ /\.t$/);
             }
             closedir $fh;

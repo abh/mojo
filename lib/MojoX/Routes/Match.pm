@@ -50,18 +50,18 @@ sub url_for {
 
         # Odd
         if (@_ % 2) {
-            $name = shift;
+            $name   = shift;
             $values = {@_};
         }
 
         # Even
         else {
 
-           # Name and hashref
-           if (ref $_[1] eq 'HASH') {
-               $name = shift;
-               $values = shift;
-           }
+            # Name and hashref
+            if (ref $_[1] eq 'HASH') {
+                $name   = shift;
+                $values = shift;
+            }
 
             # Just values
             $values = {@_};

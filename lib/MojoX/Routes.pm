@@ -48,7 +48,7 @@ sub match {
       unless ref $match && $match->isa('MojoX::Routes::Match');
 
     # Path
-    my $path = $match->path;
+    my $path      = $match->path;
     my $substring = $self->_shape(\$path);
 
     # Debug

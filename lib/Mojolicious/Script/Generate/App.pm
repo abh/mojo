@@ -30,7 +30,7 @@ sub run {
 
     # Controller
     my $controller = "${class}::Example";
-    my $path = $self->class_to_path($controller);
+    my $path       = $self->class_to_path($controller);
     $self->render_to_rel_file('controller', "$name/lib/$path", $controller);
 
     # Context
@@ -45,7 +45,7 @@ sub run {
     $self->create_rel_dir("$name/log");
 
     # Static
-    $self->render_to_rel_file('404', "$name/public/404.html");
+    $self->render_to_rel_file('404',    "$name/public/404.html");
     $self->render_to_rel_file('static', "$name/public/index.html");
 
     # Template

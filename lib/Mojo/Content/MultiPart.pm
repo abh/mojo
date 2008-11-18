@@ -64,7 +64,7 @@ sub build_boundary {
 
         # Mostly taken from LWP
         $boundary = Mojo::ByteStream->new(
-          join('', map chr(rand(256)), 1..$size * 3)
+            join('', map chr(rand(256)), 1 .. $size * 3)
         )->b64_encode;
         $boundary =~ s/\W/X/g;
 
@@ -76,7 +76,7 @@ sub build_boundary {
     # Add boundary to Content-Type header
     ($self->headers->content_type || '') =~ /^(.*multipart\/[^;]+)(.*)$/;
     my $before = $1 || 'multipart/mixed';
-    my $after = $2 || '';
+    my $after  = $2 || '';
     $self->headers->content_type("$before; boundary=$boundary$after");
 
     return $boundary;
@@ -89,9 +89,9 @@ sub get_body_chunk {
     return $self->build_body_cb->($self, $offset) if $self->build_body_cb;
 
     # Multipart
-    my $boundary = $self->build_boundary;
+    my $boundary        = $self->build_boundary;
     my $boundary_length = length($boundary) + 6;
-    my $length = $boundary_length;
+    my $length          = $boundary_length;
 
     # First boundary
     return substr "\x0d\x0a--$boundary\x0d\x0a", $offset

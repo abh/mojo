@@ -137,7 +137,7 @@ sub to_abs {
     $path->leading_slash(1);
     $path->trailing_slash($abs->path->trailing_slash);
     $abs->path($path);
-    
+
     return $abs;
 }
 
@@ -150,7 +150,7 @@ sub to_rel {
     # Different locations
     return $rel
       unless lc $base->scheme eq lc $rel->scheme
-      && $base->authority eq $rel->authority;
+          && $base->authority eq $rel->authority;
 
     # Remove scheme and authority
     $rel->scheme('');
@@ -159,7 +159,7 @@ sub to_rel {
     $rel->base($base->clone);
     my $splice = @{$base->path->parts};
 
-   # Characters after the right-most '/' need to go
+    # Characters after the right-most '/' need to go
     $splice -= 1 unless $base->path->trailing_slash;
 
     my $path = $rel->path->clone;
@@ -167,7 +167,7 @@ sub to_rel {
 
     $rel->path($path);
     $rel->path->leading_slash(0) if $splice;
-    
+
     return $rel;
 }
 
@@ -183,7 +183,7 @@ sub to_string {
     my $query     = $self->query;
 
     # *( pchar / "/" / "?" )
-    my $fragment  = Mojo::ByteStream->new($self->fragment)
+    my $fragment = Mojo::ByteStream->new($self->fragment)
       ->url_escape("$PCHAR\/\?");
 
     # Format

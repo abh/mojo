@@ -100,7 +100,7 @@ sub handler {
 }
 
 # This will run once at startup
-sub startup {}
+sub startup { }
 
 1;
 __END__

@@ -22,10 +22,10 @@ __PACKAGE__->attr([qw/buffer filter_buffer/],
     default => sub { Mojo::Buffer->new }
 );
 __PACKAGE__->attr([qw/
-    build_body_cb
-    build_headers_cb filter
-    builder_progress_cb
-/], chained => 1 );
+          build_body_cb
+          build_headers_cb filter
+          builder_progress_cb
+          /], chained => 1);
 __PACKAGE__->attr('file',
     chained => 1,
     default => sub { Mojo::File::Memory->new }
@@ -39,7 +39,7 @@ __PACKAGE__->attr('raw_header_length', chained => 1, default => 0);
 sub build_body {
     my $self = shift;
 
-    my $body = '';
+    my $body   = '';
     my $offset = 0;
     while (1) {
         my $chunk = $self->get_body_chunk($offset);
@@ -62,7 +62,7 @@ sub build_headers {
     my $self = shift;
 
     my $headers = '';
-    my $offset = 0;
+    my $offset  = 0;
     while (1) {
         my $chunk = $self->get_header_chunk($offset);
 
@@ -135,9 +135,9 @@ sub parse {
 
     # Parser started
     if ($self->is_state('start')) {
-        my $length = length($self->filter_buffer->{buffer});
-        my $raw_length = $self->filter_buffer->raw_length;
-        my $raw_header_length =  $raw_length - $length;
+        my $length            = length($self->filter_buffer->{buffer});
+        my $raw_length        = $self->filter_buffer->raw_length;
+        my $raw_header_length = $raw_length - $length;
         $self->raw_header_length($raw_header_length);
         $self->state('headers');
     }
@@ -153,9 +153,9 @@ sub parse {
 
         # Initialize filter
         $self->filter(Mojo::Filter::Chunked->new({
-            headers       => $self->headers,
-            input_buffer  => $self->filter_buffer,
-            output_buffer => $self->buffer
+                    headers       => $self->headers,
+                    input_buffer  => $self->filter_buffer,
+                    output_buffer => $self->buffer
         })) unless $self->filter;
 
         # Filter
@@ -189,14 +189,14 @@ sub parse {
 }
 
 sub raw_body_length {
-    my $self = shift;
-    my $length = $self->filter_buffer->raw_length;
+    my $self          = shift;
+    my $length        = $self->filter_buffer->raw_length;
     my $header_length = $self->raw_header_length;
     return $length - $header_length;
 }
 
 sub _build_headers {
-    my $self = shift;
+    my $self    = shift;
     my $headers = $self->headers->to_string;
     return "\x0d\x0a" unless $headers;
     return "$headers\x0d\x0a\x0d\x0a";
@@ -206,16 +206,16 @@ sub _parse_headers {
     my $self = shift;
     $self->headers->buffer($self->filter_buffer);
     $self->headers->parse;
-    my $length = length($self->headers->buffer->{buffer});
-    my $raw_length = $self->headers->buffer->raw_length;
-    my $raw_header_length =  $raw_length - $length;
+    my $length            = length($self->headers->buffer->{buffer});
+    my $raw_length        = $self->headers->buffer->raw_length;
+    my $raw_header_length = $raw_length - $length;
     $self->raw_header_length($raw_header_length);
 
     # Make sure we don't waste memory
     if ($self->file->isa('Mojo::File::Memory')) {
         $self->file(Mojo::File->new)
           if !$self->headers->content_length
-          || $self->headers->content_length > MAX_MEMORY_SIZE;
+              || $self->headers->content_length > MAX_MEMORY_SIZE;
     }
 
     $self->state('body') if $self->headers->is_done;

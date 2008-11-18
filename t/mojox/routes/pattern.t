@@ -16,13 +16,13 @@ is($pattern->segments, 3);
 $pattern->defaults({action => 'index'});
 my $result = $pattern->match('/test/foo/bar');
 is($result->{controller}, 'foo');
-is($result->{action}, 'bar');
+is($result->{action},     'bar');
 $result = $pattern->match('/test/foo');
 is($result->{controller}, 'foo');
-is($result->{action}, 'index');
+is($result->{action},     'index');
 $result = $pattern->match('/test/foo/');
 is($result->{controller}, 'foo');
-is($result->{action}, 'index');
+is($result->{action},     'index');
 $result = $pattern->match('/test/');
 is($result, undef);
 is($pattern->render(controller => 'foo'), '/test/foo');
@@ -35,14 +35,14 @@ is($pattern->segments, 4);
 $pattern->defaults({action => 'index', id => 1});
 $result = $pattern->match('/test/foo/bar/23');
 is($result->{controller}, 'foo');
-is($result->{action}, 'bar');
-is($result->{id}, 23);
+is($result->{action},     'bar');
+is($result->{id},         23);
 $result = $pattern->match('/test/foo/bar/baz');
 is($result, undef);
 is($pattern->render(
-    controller => 'zzz',
-    action => 'index',
-    id => 13
+        controller => 'zzz',
+        action     => 'index',
+        id         => 13
 ), '/test/zzz/index/13');
 is($pattern->render(controller => 'zzz'), '/test/zzz');
 
@@ -52,7 +52,7 @@ is($pattern->segments, 2);
 $pattern->defaults({action => 'index'});
 $result = $pattern->match('/footest/bar');
 is($result->{controller}, 'foo');
-is($result->{action}, 'bar');
+is($result->{action},     'bar');
 is($pattern->render(controller => 'zzz', action => 'lala'), '/zzztest/lala');
 $result = $pattern->match('/test/lala');
 is($result, undef);

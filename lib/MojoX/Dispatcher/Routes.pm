@@ -13,7 +13,7 @@ use Mojo::Loader;
 use constant DEBUG => $ENV{MOJOX_ROUTES_DEBUG} || 0;
 
 __PACKAGE__->attr('controllers', chained => 1, default => sub { {} });
-__PACKAGE__->attr('namespace',   chained => 1);
+__PACKAGE__->attr('namespace', chained => 1);
 
 # Hey. What kind of party is this? There's no booze and only one hooker.
 sub dispatch {

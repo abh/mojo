@@ -12,7 +12,7 @@ use Mojo::ByteStream;
 use Mojo::URL;
 
 __PACKAGE__->attr('pair_separator', chained => 1, default => '&');
-__PACKAGE__->attr('params',         chained => 1, default => sub { [] });
+__PACKAGE__->attr('params', chained => 1, default => sub { [] });
 
 # Yeah, Moe, that team sure did suck last night. They just plain sucked!
 # I've seen teams suck before,
@@ -32,7 +32,7 @@ sub new {
 }
 
 sub append {
-    my $self   = shift;
+    my $self = shift;
 
     # Append
     push @{$self->params}, @_;
@@ -161,11 +161,11 @@ sub to_string {
     # Format
     my @params;
     for (my $i = 0; $i < @$params; $i += 2) {
-        my $name  = $params->[$i];
+        my $name = $params->[$i];
         my $value = $params->[$i + 1] || undef;
 
         # We replace whitespace with "+"
-        $name  =~ s/\ /\+/g;
+        $name =~ s/\ /\+/g;
 
         # Value is optional
         if (defined $value) {

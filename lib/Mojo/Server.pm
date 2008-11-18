@@ -33,8 +33,8 @@ __PACKAGE__->attr('build_tx_cb',
             }
 
             return $self->app->build_tx;
-        }
-    }
+          }
+      }
 );
 __PACKAGE__->attr('continue_handler_cb',
     chained => 1,
@@ -44,7 +44,7 @@ __PACKAGE__->attr('continue_handler_cb',
             $tx->res->code(100);
             return $tx;
         };
-    }
+      }
 );
 __PACKAGE__->attr('handler_cb',
     chained => 1,
@@ -54,7 +54,7 @@ __PACKAGE__->attr('handler_cb',
             $self->app->handler($tx);
             return $tx;
         };
-    }
+      }
 );
 
 # It's up to the subclass to decide where log messages go

@@ -68,7 +68,7 @@ sub camelize {
     my @words = split /_/, $self->{bytestream};
 
     # Case
-    @words = map { ucfirst } map { lc } @words;
+    @words = map {ucfirst} map {lc} @words;
 
     # Join
     $self->{bytestream} = join '', @words;
@@ -86,14 +86,14 @@ sub decamelize {
 
     # Shortcut
     return $self if !defined $self->{bytestream}
-      || $self->{bytestream} !~ /^[A-Z]+/;
+          || $self->{bytestream} !~ /^[A-Z]+/;
 
     # Split
     my @words;
     push @words, $1 while ($self->{bytestream} =~ s/([A-Z]+[^A-Z]*)//);
 
     # Case
-    @words = map { lc } @words;
+    @words = map {lc} @words;
 
     # Join
     $self->{bytestream} = join '_', @words;
@@ -199,8 +199,8 @@ sub url_escape {
     my $pattern = shift || 'A-Za-z0-9\-\.\_\~';
 
     # Escape
-	$self->{bytestream}
-	  =~ s/([^$pattern])/sprintf('%%%02X',ord($1))/ge;
+    $self->{bytestream}
+      =~ s/([^$pattern])/sprintf('%%%02X',ord($1))/ge;
 
     return $self;
 }

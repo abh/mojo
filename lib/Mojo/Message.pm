@@ -23,9 +23,9 @@ __PACKAGE__->attr('buffer',
     default => sub { Mojo::Buffer->new }
 );
 __PACKAGE__->attr([qw/
-    build_start_line_cb
-    parser_progress_cb
-/], chained => 1);
+          build_start_line_cb
+          parser_progress_cb
+          /], chained => 1);
 __PACKAGE__->attr('content',
     chained => 1,
     default => sub { Mojo::Content->new }
@@ -68,8 +68,8 @@ sub body_params {
 
     # "x-application-urlencoded" and "application/x-www-form-urlencoded"
     my $content_type = $self->headers->content_type || '';
-    if ($content_type 
-      =~ /(?:x-application|application\/x-www-form)-urlencoded/i) {
+    if ($content_type
+        =~ /(?:x-application|application\/x-www-form)-urlencoded/i) {
 
         # Parse
         my $raw = $self->content->file->slurp;
@@ -97,7 +97,7 @@ sub body_params {
 }
 
 sub build {
-    my $self = shift;
+    my $self    = shift;
     my $message = '';
 
     # Start line
@@ -138,7 +138,7 @@ sub build_start_line {
     my $self = shift;
 
     my $startline = '';
-    my $offset = 0;
+    my $offset    = 0;
     while (1) {
         my $chunk = $self->get_start_line_chunk($offset);
 

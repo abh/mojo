@@ -123,14 +123,14 @@ sub parse {
 }
 
 sub _build_start_line {
-    my $self = shift;
+    my $self    = shift;
     my $version = $self->version;
 
     # HTTP 0.9 has no start line
     return '' if $version eq '0.9';
 
     # HTTP 1.0 and above
-    my $code = $self->code || 200;
+    my $code    = $self->code    || 200;
     my $message = $self->message || $self->default_message;
     return "HTTP/$version $code $message\x0d\x0a";
 }

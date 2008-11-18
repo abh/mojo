@@ -45,7 +45,7 @@ is("$stream", "Zm9vw5/EgGJhciUyM+KYug==\n");
 my $text = Mojo::ByteStream->new("Zm9vw5/EgGJhciUyM+KYug==\n")
   ->b64_decode
   ->decode('utf8');
-is("$text","foo\x{df}\x{0100}bar%23\x{263a}");
+is("$text", "foo\x{df}\x{0100}bar%23\x{263a}");
 
 # url_escape
 $stream = Mojo::ByteStream->new('business;23');

@@ -21,7 +21,7 @@ use_ok('Mojo::Server::Daemon');
 
 # Test sane Mojo::Server subclassing capabilities
 my $daemon = Mojo::Server::Daemon->new;
-my $size = $daemon->listen_queue_size;
+my $size   = $daemon->listen_queue_size;
 $daemon = Mojo::Server::Daemon->new(listen_queue_size => $size + 10);
 is($daemon->listen_queue_size, $size + 10);
 
@@ -43,23 +43,23 @@ $client->process_all($tx);
 is($tx->res->code, 200);
 is($tx->continued, 1);
 like($tx->res->headers->connection, qr/Keep-Alive/i);
-like($tx->res->body, qr/Mojo is working/);
+like($tx->res->body,                qr/Mojo is working/);
 
 # Second keep alive request
 $tx = Mojo::Transaction->new_get("http://127.0.0.1:$port/");
 $client->process_all($tx);
-is($tx->res->code, 200);
+is($tx->res->code,  200);
 is($tx->kept_alive, 1);
 like($tx->res->headers->connection, qr/Keep-Alive/i);
-like($tx->res->body, qr/Mojo is working/);
+like($tx->res->body,                qr/Mojo is working/);
 
 # Third keep alive request
 $tx = Mojo::Transaction->new_get("http://127.0.0.1:$port/");
 $client->process_all($tx);
-is($tx->res->code, 200);
+is($tx->res->code,  200);
 is($tx->kept_alive, 1);
 like($tx->res->headers->connection, qr/Keep-Alive/i);
-like($tx->res->body, qr/Mojo is working/);
+like($tx->res->body,                qr/Mojo is working/);
 
 # Stop
 $server->stop_server_ok;

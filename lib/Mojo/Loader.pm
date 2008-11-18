@@ -77,7 +77,7 @@ sub load {
 }
 
 sub load_build {
-    my $self  = shift;
+    my $self = shift;
 
     # Instantiate self
     $self = $self->new unless ref $self;
@@ -130,7 +130,7 @@ sub search {
     $self->namespace($namespace);
 
     # Directories
-    my @directories = exists $INC{'blib.pm'} ? grep { /blib/ } @INC : @INC;
+    my @directories = exists $INC{'blib.pm'} ? grep {/blib/} @INC : @INC;
 
     # Scan
     my %found;

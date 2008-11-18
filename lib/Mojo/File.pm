@@ -20,9 +20,9 @@ use constant TMPDIR => $ENV{MOJO_TMPDIR} || File::Spec->tmpdir;
 
 __PACKAGE__->attr('cleanup', chained => 1);
 __PACKAGE__->attr('handle',
-    chained => 1, 
+    chained => 1,
     default => sub {
-        my $self = shift;
+        my $self   = shift;
         my $handle = IO::File->new;
 
         # Already got a file without handle
@@ -55,7 +55,7 @@ __PACKAGE__->attr('handle',
         # Open for read/write access
         $handle->open("+> $file") or die qq/Can't open file "$file": $!/;
         return $handle;
-    }
+      }
 );
 
 sub DESTROY {
@@ -72,7 +72,7 @@ sub new {
 }
 
 sub add_chunk {
-    my $self  = shift;
+    my $self = shift;
     my $chunk = join '', @_ if @_;
 
     # Shortcut

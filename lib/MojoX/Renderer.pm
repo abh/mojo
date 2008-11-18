@@ -40,7 +40,7 @@ sub render {
     return undef unless $args;
 
     my $template = $args->{template};
-    my $default = $self->default_ext;
+    my $default  = $self->default_ext;
     $template .= ".$default" if $default && $template !~ /\.\w+$/;
 
     my $path = File::Spec->catfile($self->root, $template);
@@ -62,10 +62,10 @@ sub render {
     # Render
     my $output;
     return undef unless $handler->($self, {
-        args    => $args,
-        c       => $c,
-        output  => \$output,
-        path    => $path
+            args   => $args,
+            c      => $c,
+            output => \$output,
+            path   => $path
     });
 
     # Partial

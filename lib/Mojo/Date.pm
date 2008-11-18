@@ -82,9 +82,9 @@ sub parse {
 
     # Invalid format
     else { return undef }
-    
+
     $self->epoch(
-      Time::Local::timegm($second, $minute, $hour, $day, $month, $year));
+        Time::Local::timegm($second, $minute, $hour, $day, $month, $year));
     return $self;
 }
 
@@ -102,7 +102,7 @@ sub to_string {
 
     # Format
     return sprintf("%s, %02d %s %04d %02d:%02d:%02d GMT", $days->[$wday],
-      $mday, $months->[$month], $year+1900, $hour, $minute, $second);
+        $mday, $months->[$month], $year + 1900, $hour, $minute, $second);
 }
 
 1;

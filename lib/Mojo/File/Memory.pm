@@ -19,7 +19,7 @@ __PACKAGE__->attr('content', default => '');
 sub add_chunk {
     my ($self, $chunk) = @_;
     $self->{content} ||= '';
-    $self->{content}  .= $chunk;
+    $self->{content} .= $chunk;
     return $self;
 }
 

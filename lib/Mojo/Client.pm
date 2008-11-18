@@ -13,14 +13,14 @@ use Mojo;
 use Mojo::Loader;
 use Mojo::Message::Response;
 
-__PACKAGE__->attr('continue_timeout', chained => 1, default => 3);
+__PACKAGE__->attr('continue_timeout',   chained => 1, default => 3);
 __PACKAGE__->attr('keep_alive_timeout', chained => 1, default => 15);
-__PACKAGE__->attr('select_timeout', chained => 1, default => 5);
+__PACKAGE__->attr('select_timeout',     chained => 1, default => 5);
 
 sub connect {
     my ($self, $tx) = @_;
 
-    my $req = $tx->req;
+    my $req  = $tx->req;
     my $host = $req->url->host;
     my $port = $req->url->port || 80;
 
@@ -47,7 +47,7 @@ sub connect {
         my $address = sockaddr_in($port, scalar inet_aton($host));
         $connection->connect($address);
         $tx->{connect_timeout} = time + 5;
-        
+
     }
     $tx->connection($connection);
     $tx->state('connect');
@@ -167,7 +167,7 @@ sub spin {
     for my $tx (@transactions) {
 
         # Check for request/response errors
-        $tx->error('Request error.') if $tx->req->has_error;
+        $tx->error('Request error.')  if $tx->req->has_error;
         $tx->error('Response error.') if $tx->res->has_error;
 
         # Connect transaction
@@ -200,7 +200,7 @@ sub spin {
         if ($tx->is_state('write_start_line')) {
             if ($tx->{_to_write} <= 0) {
                 $tx->state('write_headers');
-                $tx->{_offset} = 0;
+                $tx->{_offset}   = 0;
                 $tx->{_to_write} = $tx->req->header_length;
             }
         }
@@ -210,7 +210,7 @@ sub spin {
             if ($tx->{_to_write} <= 0) {
                 $tx->{_continue}
                   ? $tx->state('read_continue') : $tx->state('write_body');
-                $tx->{_offset} = 0;
+                $tx->{_offset}   = 0;
                 $tx->{_to_write} = $tx->req->body_length;
             }
         }
@@ -260,14 +260,14 @@ sub spin {
     # No sockets ready yet
     return 0 unless $waiting;
 
-    my $read_select =  @read_select ?
+    my $read_select = @read_select ?
       IO::Select->new(@read_select) : undef;
     my $write_select = @write_select ?
       IO::Select->new(@write_select) : undef;
 
     # Select
     my ($read, $write, undef) = IO::Select->select(
-      $read_select, $write_select, undef, $self->select_timeout);
+        $read_select, $write_select, undef, $self->select_timeout);
 
     # Make sure we don't wait longer than 5 seconds for a 100 Continue
     for my $tx (@transactions) {
@@ -286,7 +286,7 @@ sub spin {
     my $do = -1;
     $do = 0 if @$read;
     $do = 1 if @$write;
-    $do = int(rand(3))-1 if @$read && @$write;
+    $do = int(rand(3)) - 1 if @$read && @$write;
 
     # Write
     if ($do == 1) {
@@ -294,10 +294,10 @@ sub spin {
         my ($tx, $req, $chunk);
 
         # Check for content
-        for my $connection (sort {int(rand(3))-1} @$write) {
+        for my $connection (sort { int(rand(3)) - 1 } @$write) {
 
             my $name = $self->_socket_name($connection);
-            $tx = $transaction{$name};
+            $tx  = $transaction{$name};
             $req = $tx->req;
 
             # Body
@@ -329,9 +329,9 @@ sub spin {
     elsif ($do == 0) {
 
         my $connection = $read->[rand(@$read)];
-        my $name = $self->_socket_name($connection);
-        my $tx = $transaction{$name};
-        my $res = $tx->res;
+        my $name       = $self->_socket_name($connection);
+        my $tx         = $transaction{$name};
+        my $res        = $tx->res;
 
         # Early response, most likely an error
         $tx->state('read_response')

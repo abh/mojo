@@ -82,7 +82,7 @@ sub _tokenize {
         }
 
         # Bad format
-        else { last }
+        else {last}
 
     }
 

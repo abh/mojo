@@ -57,14 +57,7 @@ sub run {
             last unless length $chunk;
 
             # Start line
-            my $written;
-            if ($ENV{MOJO_RETURN_ONLY}) {
-                $output .= $chunk;
-                $written = length $chunk;
-            }
-            else {
-                $written = STDOUT->syswrite($chunk);
-            }
+            my $written = _write(\$chunk, \$output);
             return unless defined $written;
             $offset += $written;
         }
@@ -88,14 +81,7 @@ sub run {
         last unless length $chunk;
 
         # Headers
-        my $written;
-        if ($ENV{MOJO_RETURN_ONLY}) {
-            $output .= $chunk;
-            $written = length $chunk;
-        }
-        else {
-            $written = STDOUT->syswrite($chunk);
-        }
+        my $written = _write(\$chunk, \$output);
         return unless defined $written;
         $offset += $written;
     }
@@ -115,14 +101,7 @@ sub run {
         last unless length $chunk;
 
         # Content
-        my $written;
-        if ($ENV{MOJO_RETURN_ONLY}) {
-            $output .= $chunk;
-            $written = length $chunk;
-        }
-        else {
-            $written = STDOUT->syswrite($chunk);
-        }
+        my $written = _write(\$chunk, \$output);
         return unless defined $written;
         $offset += $written;
     }
@@ -133,6 +112,20 @@ sub run {
     else {
         return $res->code;
     }
+}
+
+sub _write {
+    my ($chunk, $output) = @_;
+    return unless $chunk;
+    my $written;
+    if ($ENV{MOJO_RETURN_ONLY}) {
+        $$output .= $$chunk;
+        $written = length $$chunk;
+    }
+    else {
+        $written = STDOUT->syswrite($$chunk);
+    }
+    return $written;
 }
 
 1;

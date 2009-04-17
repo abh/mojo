@@ -71,6 +71,15 @@ sub url_for {
     return $url;
 }
 
+sub skip_renderer {
+    my $self  = shift;
+    my $stash = $self->stash;
+
+    $stash->{rendered} = $_[0] if @_;
+
+    return $stash->{rendered} || $c->res->code;
+}
+
 1;
 __END__
 
@@ -118,5 +127,16 @@ L<MojoX::Dispatcher::Routes::Context> and implements the following new ones.
     my $url = $c->url_for;
     my $url = $c->url_for(controller => 'bar', action => 'baz');
     my $url = $c->url_for('named', controller => 'bar', action => 'baz');
+
+=head2 C<skip_renderer>
+
+Flag that controls if the C<render()> method is called at the end of the
+dispatch logic.
+
+If your controller takes care of building up the response to the request,
+you can call C<< $c->skip_renderer(1) >>.
+
+With arguments, returns the new value of the flag. Without, returns the
+current value.
 
 =cut

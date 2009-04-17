@@ -59,6 +59,9 @@ sub startup {
         method    => 'test'
     );
 
+    # speciallized renderer
+    $r->route('/special')->to(controller => 'bar', action => 'special');
+
     # /*/* - the default route
     $r->route('/:controller/:action')->to(action => 'index');
 }

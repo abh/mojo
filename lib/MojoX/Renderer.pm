@@ -114,8 +114,8 @@ sub render {
     $res->headers->content_type($type);
 
     # Success!
-    $c->stash->{partial}  = $partial;
-    $c->stash->{rendered} = 1;
+    $c->stash->{partial} = $partial;
+    $c->skip_renderer(1);
     return 1;
 }
 

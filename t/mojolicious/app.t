@@ -78,6 +78,12 @@ $client->process_local('MojoliciousTest', $tx);
 is($tx->res->code, 404);
 like($tx->res->body, qr/File Not Found/);
 
+# Skip render
+$tx = Mojo::Transaction->new_get('/special');
+$client->process_local('MojoliciousTest', $tx);
+is($tx->res->code, 200);
+is($tx->res->body, 'Yuupiii!');
+
 # Static file /hello.txt in a production mode
 my $backup = $ENV{MOJO_MODE} || '';
 $ENV{MOJO_MODE} = 'production';

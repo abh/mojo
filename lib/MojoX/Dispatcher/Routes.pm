@@ -126,7 +126,7 @@ sub dispatch {
     }
 
     # Render
-    $c->render unless $c->stash->{rendered} || $c->res->code;
+    $c->render unless $c->skip_renderer;
 
     # All seems ok
     return 1;

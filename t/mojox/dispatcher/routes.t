@@ -21,8 +21,6 @@ use base 'MojoX::Dispatcher::Routes::Context';
 
 __PACKAGE__->attr('render_called');
 
-sub skip_renderer { shift->render() }
-
 sub render { shift->render_called(1) }
 
 sub reset_state {

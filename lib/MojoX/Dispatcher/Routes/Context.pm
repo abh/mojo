@@ -13,6 +13,15 @@ __PACKAGE__->attr(match => (chained => 1));
 # it make sure to put them in *after* you cook it.
 sub render { }
 
+sub skip_renderer {
+    my $self  = shift;
+    my $stash = $self->stash;
+
+    $stash->{rendered} = $_[0] if @_;
+
+    return $stash->{rendered};
+}
+
 1;
 __END__
 
@@ -47,5 +56,16 @@ L<MojoX::Context> and implements the following new ones.
 =head2 C<render>
 
     $c->render;
+
+=head2 C<skip_renderer>
+
+Flag that controls if the C<render()> method is called at the end of the
+dispatch logic.
+
+If your controller takes care of building up the response to the request,
+you can call C<< $c->skip_renderer(1) >>.
+
+With arguments, returns the new value of the flag. Without, returns the
+current value.
 
 =cut

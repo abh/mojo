@@ -77,7 +77,7 @@ sub skip_renderer {
 
     $stash->{rendered} = $_[0] if @_;
 
-    return $stash->{rendered} || $c->res->code;
+    return $stash->{rendered};
 }
 
 1;

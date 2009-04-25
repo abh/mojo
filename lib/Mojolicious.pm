@@ -34,7 +34,7 @@ __PACKAGE__->attr(
 __PACKAGE__->attr(
     routes => (
         chained => 1,
-        default => sub { Mojolicious::Dispatcher->new }
+        default => sub { MojoX::Dispatcher::Routes->new }
     )
 );
 __PACKAGE__->attr(
@@ -85,6 +85,9 @@ sub new {
     return $self;
 }
 
+# That's not why people watch TV.
+# Clever things make people feel stupid and unexpected things make them feel
+# scared.
 sub build_ctx {
     my $self = shift;
     return $self->ctx_class->new(app => $self, tx => shift);

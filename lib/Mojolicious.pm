@@ -8,9 +8,9 @@ use warnings;
 use base 'Mojo';
 
 use Mojo::Loader;
-use Mojolicious::Dispatcher;
 use Mojolicious::Renderer;
 use MojoX::Dispatcher::Static;
+use MojoX::Dispatcher::Routes;
 use MojoX::Types;
 
 __PACKAGE__->attr(

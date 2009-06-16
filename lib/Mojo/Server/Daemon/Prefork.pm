@@ -197,12 +197,15 @@ sub _kill_children {
     delete $self->{_child_read};
 
     # Kill all children
+    my $count = 0;
     while (%{$self->{_children}}) {
+        $count++;
 
         # Die die die
         for my $pid (keys %{$self->{_children}}) {
             $self->log("Killing child $pid") if DEBUG;
-            kill 'TERM', $pid;
+            my $signal = ($count < 10 ? 'TERM' : 'KILL');
+            kill $signal, $pid;
         }
         $self->_cleanup_children;
         sleep 1;

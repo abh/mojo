@@ -59,12 +59,20 @@ sub store {
     my $domain = $self->cookie_domain;
     $options->{domain} = $domain if $domain;
 
-    # Freeze
-    my $value = freeze $session;
+    if (keys %$session == 1) {
+        delete $session->{expires}
+    }
 
-    # Encode
-    $value = b($value)->b64_encode->to_string;
-    $value =~ s/\n//g;
+    my $value = "";
+
+    if (%$session) {
+        # Freeze
+        $value = freeze $session;
+
+        # Encode
+        $value = b($value)->b64_encode->to_string;
+        $value =~ s/\n//g;
+    }
 
     # Session cookie
     $c->signed_cookie($self->cookie_name, $value, $options);

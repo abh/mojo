@@ -63,21 +63,8 @@ sub signed_cookie {
     # Secret
     my $secret = $self->app->secret;
 
-    # Response cookie
-    if (defined $value) {
-
-        # Sign value
-        my $signature =
-          Mojo::ByteStream->new($value)->hmac_md5_sum($secret)->to_string;
-        $value = $value .= "--$signature";
-
-        # Create cookie
-        my $cookie = $self->cookie($name, $value, $options);
-        return $cookie;
-    }
-
-    # Request cookies
     my @values = $self->cookie($name);
+    # Request cookies
     my @results;
     for my $value (@values) {
 
@@ -101,7 +88,31 @@ sub signed_cookie {
         else { $self->app->log->debug(qq/Cookie "$name" not signed./) }
     }
 
-    return wantarray ? @results : $results[0];
+    return wantarray ? @results : $results[0]
+      unless (defined $value);
+
+    # Response cookie
+
+    # Don't set the cookie unless there was or is a value
+    my $need_cookie = $value ne '' or @values ? 1 : 0;
+
+    # If there's only one cookie in the request and it's the same as
+    # the new value, don't bother setting it -- for sessions there's
+    # an internal expires that changes anyway
+    $need_cookie = 0 if scalar @values == 1 and $values[0] eq $value;
+
+    return unless $need_cookie;
+
+    # Don't sign the empty value ... 
+    if ($value) {
+        # Sign value
+        my $signature =
+          Mojo::ByteStream->new($value)->hmac_md5_sum($secret)->to_string;
+        $value = $value .= "--$signature";
+    }
+
+    # Create cookie
+    return $self->cookie($name, $value, $options);
 }
 
 sub stash {
